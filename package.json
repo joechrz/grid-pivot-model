@@ -1,0 +1,39 @@
+{
+  "name": "grid-pivot-model",
+  "version": "1.0.0",
+  "description": "provides functionality for implementing pivot grids with gridgrid/grid",
+  "main": "index.js",
+  "scripts": {
+    "build": "node_modules/typescript/bin/tsc -p src/ && node_modules/browserify/bin/cmd.js -d index.js > release/bundle.js",
+    "start": "npm run build && node_modules/llexec/lib/index.js -w timestamp 'npm run start:ts' 'npm run start:watchify' 'npm run start:server'",
+    "start:ts": "node_modules/typescript/bin/tsc -w -p src/",
+    "start:watchify": "node_modules/watchify/bin/cmd.js --poll -v -d -o release/bundle.js index.js",
+    "start:server": "./start-server --port 8080 .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": "https://github.com/joechrz/grid-pivot-model",
+  "peerDependencies": {
+    "grid": "3.x"
+  },
+  "devDependencies": {
+    "@types/es6-shim": "~0.31.32",
+    "@types/node": "~6.0.46",
+    "aliasify": "~2.0.0",
+    "browserify": "~13.1.1",
+    "express": "~4.14.0",
+    "http-proxy": "~1.15.2",
+    "https": "~1.0.0",
+    "llexec": "~1.2.2",
+    "path": "~0.12.7",
+    "tape": "~4.6.2",
+    "typescript": "~2.0.6",
+    "url": "~0.11.0",
+    "watchify": "~3.7.0",
+    "yargs": "~6.3.0"
+  },
+  "dependencies": {
+    "universe": "~0.8.0"
+  }
+}

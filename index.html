@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Pivot Grid</title>
+
+    <link rel='stylesheet' type='text/css' href='grid.css' />
+
+    <style type="text/css">
+      body {
+        display: flex;
+        position: absolute;
+
+        margin: 0;
+        padding: 0;
+
+        left: 0px;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+      }
+
+      .raw-data,
+      .chart,
+      .pivot-grid,
+      .explorer,
+      .data-grid {
+        position: relative;
+        flex: 1;
+      }
+
+      .raw-data {
+        display: flex;
+      }
+
+      .explorer {
+        display: flex;
+        flex-direction: column;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class='raw-data'>
+      <div class='data-grid' id="raw-data-grid-container"></div>
+    </div>
+
+    <div class='explorer'>
+      <div class='pivot-grid' id='pivot-grid'>&nbsp;</div>
+    </div>
+
+    <script src="release/bundle.js"></script>
+  </body>
+</html>
