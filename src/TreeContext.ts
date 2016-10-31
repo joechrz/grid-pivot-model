@@ -30,11 +30,12 @@ export class TreeContext extends TreeNode {
     return rowDesc['datum'].value[this._colMap[col]];
   }
 
-  public createRowDescriptors(forData: any[], builder): IRowDescriptor[] {
+  public createRowDescriptors(node: TreeNode, builder): IRowDescriptor[] {
     const descriptors = [];
 
-    forData.forEach(datum => {
+    node.data.forEach(datum => {
       const desc = this.grid.rowModel.create();
+      desc['treeNode'] = node;
       desc['datum'] = datum;
       descriptors.push(desc);
     });
@@ -42,12 +43,12 @@ export class TreeContext extends TreeNode {
     return descriptors;
   }
 
-  public initRowDescriptors(forData: any[], builder): IRowDescriptor[] {
+  public initRowDescriptors(node: TreeNode, builder): IRowDescriptor[] {
     const fixedHeader = this.grid.rowModel.create(builder);
     fixedHeader.fixed = true;
     fixedHeader.header = true;
 
-    return [fixedHeader].concat(this.createRowDescriptors(forData, builder));
+    return [fixedHeader].concat(this.createRowDescriptors(node, builder));
   }
 
   public initColumnDescriptors(builder): IColumnDescriptor[] {

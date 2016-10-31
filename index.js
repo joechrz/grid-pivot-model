@@ -19,6 +19,8 @@ var aggregates = [
   new gpm.Aggregate(gpm.AggregateType.MAX, 'distance')
 ];
 
+var drillOrder = ['date', 'origin', 'destination'];
+
 gpm.create(grid, data, aggregates).then(function (treeContext) {
   var expandableBuilder = builderFactory(grid, function (ctx) {
     console.log(ctx.viewRow);
@@ -27,8 +29,8 @@ gpm.create(grid, data, aggregates).then(function (treeContext) {
     var rowDesc = grid.virtual.row.get(row);
     var datum = rowDesc.datum;
 
-    treeContext.drill(datum.key, 'date', aggregates).then(function (resultNode) {
-      rowDesc.children = treeContext.createRowDescriptors(resultNode.data);
+    rowDesc.treeNode.drill(datum.key, drillOrder.shift(), aggregates).then(function (resultNode) {
+      rowDesc.children = treeContext.createRowDescriptors(resultNode);
       rowDesc.expanded = true;
     }).catch(function (err) {
       console.error(err);
@@ -39,7 +41,7 @@ gpm.create(grid, data, aggregates).then(function (treeContext) {
   var colDescriptors = treeContext.initColumnDescriptors(expandableBuilder);
   grid.colModel.add(colDescriptors);
 
-  var rowDescriptors = treeContext.initRowDescriptors(treeContext.data);
+  var rowDescriptors = treeContext.initRowDescriptors(treeContext);
   grid.rowModel.add(rowDescriptors);
 
   grid.dataModel = {
