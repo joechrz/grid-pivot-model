@@ -18,14 +18,13 @@ module.exports = function createBuilder(grid, clickHandler) {
       elem.classList.remove('expanded');
     }
 
-    if (rowDescriptor.level) {
-      elem.classList.add('level-' + rowDescriptor.level);
-    }
-    else {
-      elem.classList.remove('level-0');
-      elem.classList.remove('level-1');
-      elem.classList.remove('level-2');
-      elem.classList.remove('level-3');
+    elem.classList.remove('level-0');
+    elem.classList.remove('level-1');
+    elem.classList.remove('level-2');
+    elem.classList.remove('level-3');
+
+    if (rowDescriptor.treeNode && rowDescriptor.treeNode.level) {
+      elem.classList.add('level-' + rowDescriptor.treeNode.level);
     }
 
     var textLabel = elem.querySelector('.label');

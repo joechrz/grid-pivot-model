@@ -14,6 +14,7 @@ var dirtyClean = grid.makeDirtyClean();
 var builderFactory = require('./row-builder');
 
 var aggregates = [
+  new gpm.Aggregate(gpm.AggregateType.COUNT, 'distance'),
   new gpm.Aggregate(gpm.AggregateType.SUM, 'distance'),
   new gpm.Aggregate(gpm.AggregateType.MIN, 'distance'),
   new gpm.Aggregate(gpm.AggregateType.MAX, 'distance')
@@ -25,7 +26,7 @@ gpm.create(grid, data, aggregates).then(function (treeContext) {
   var expandableBuilder = builderFactory(grid, function (ctx) {
     console.log(ctx.viewRow);
 
-    var row = ctx.viewRow;
+    var row = grid.viewPort.toVirtualRow(ctx.viewRow);
     var rowDesc = grid.virtual.row.get(row);
     var datum = rowDesc.datum;
 

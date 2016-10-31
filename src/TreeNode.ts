@@ -12,7 +12,25 @@ export class TreeNode {
   }
 
   public get data() {
-    return this.context.data;
+    return this.context.data.filter(datum => {
+      return datum.value['count'] > 0;
+    });
+  }
+
+  public get level() {
+    if (!this._parent) {
+      return 0;
+    }
+
+    return this._parent.level + 1;
+  }
+
+  public get dimension() {
+    const groupBy = this.context.original.groupBy;
+    if (groupBy && typeof groupBy === 'string') {
+      return groupBy;
+    }
+    return null;
   }
 
   constructor(queryResult: IQueryResult, parentNode: TreeNode = null) {
@@ -23,7 +41,7 @@ export class TreeNode {
   }
 
   public buildSelectObject(aggregates: Aggregate[]) {
-    const select = {};
+    const select = { };
 
     aggregates.forEach(agg => {
       select[agg.aggregateType] = agg.overColumn;
@@ -48,6 +66,13 @@ export class TreeNode {
       select: this.buildSelectObject(aggregates),
       filter: { }
     };
+
+    // add a filter for the node that was drilled into
+    if (intoKey && this.dimension) {
+      query.filter[this.dimension] = {
+        $eq: intoKey
+      };
+    }
 
     return this.universe.query(query).then(qres => {
       return new TreeNode(qres, this);

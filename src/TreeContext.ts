@@ -55,6 +55,7 @@ export class TreeContext extends TreeNode {
     const fixedHeader = this.grid.colModel.create(builder);
     fixedHeader.fixed = true;
     fixedHeader.header = true;
+    fixedHeader.width = 200;
 
     return [fixedHeader].concat(this.createColumnDescriptors(builder));
   }
