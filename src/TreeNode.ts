@@ -6,6 +6,7 @@ export class TreeNode {
   private _parent: TreeNode;
   private _dimension: string;
   public context: IQueryResult;
+  public properties: { [key: string]: any } = {};
 
   public get universe() {
     return this.context.universe;
@@ -61,11 +62,14 @@ export class TreeNode {
   }
 
   public drill(intoKey: string, by: string, aggregates: Aggregate[]) {
-    const query = {
+    console.log(`drilling into ${intoKey} by ${by}`);
+    let query = {
       groupBy: by,
       select: this.buildSelectObject(aggregates),
       filter: { }
     };
+
+    Object.assign(query.filter, this.context.original.filter);
 
     // add a filter for the node that was drilled into
     if (intoKey && this.dimension) {
@@ -74,6 +78,7 @@ export class TreeNode {
       };
     }
 
+    console.log(JSON.stringify(query, null, 2));
     return this.universe.query(query).then(qres => {
       return new TreeNode(qres, this);
     });

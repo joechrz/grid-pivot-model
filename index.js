@@ -23,14 +23,25 @@ var aggregates = [
 var drillOrder = ['date', 'origin', 'destination'];
 
 gpm.create(grid, data, aggregates).then(function (treeContext) {
+  treeContext.properties.pivots = drillOrder.slice(0);
+
   var expandableBuilder = builderFactory(grid, function (ctx) {
     console.log(ctx.viewRow);
 
     var row = grid.viewPort.toVirtualRow(ctx.viewRow);
     var rowDesc = grid.virtual.row.get(row);
-    var datum = rowDesc.datum;
 
-    rowDesc.treeNode.drill(datum.key, drillOrder.shift(), aggregates).then(function (resultNode) {
+    if (rowDesc.expanded) {
+      rowDesc.expanded = false;
+      rowDesc.children = null;
+      return true;
+    }
+
+    var datum = rowDesc.datum;
+    var node = rowDesc.treeNode;
+
+    rowDesc.treeNode.drill(datum.key, node.properties.pivots[0], aggregates).then(function (resultNode) {
+      resultNode.properties.pivots = node.properties.pivots.slice(1);
       rowDesc.children = treeContext.createRowDescriptors(resultNode);
       rowDesc.expanded = true;
     }).catch(function (err) {
