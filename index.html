@@ -36,6 +36,32 @@
         display: flex;
         flex-direction: column;
       }
+
+      .triangle-wrap {
+        cursor: pointer;
+        padding: 2px;
+      }
+
+      .triangle {
+        pointer-events: none;
+        content: ' ';
+        display: inline-block;
+        border: solid 6px transparent;
+        border-left: solid 6px black;
+        position: relative;
+        left: 1px;
+      }
+
+      .expanded .triangle {
+        border-left: solid 6px transparent;
+        border-top: solid 6px black;
+        top: 3px;
+      }
+
+      .level-0 { padding-left: 0px; }
+      .level-1 { padding-left: 24px; }
+      .level-2 { padding-left: 48px; }
+      .level-3 { padding-left: 72px; }
     </style>
   </head>
 
